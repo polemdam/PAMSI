@@ -7,7 +7,7 @@ INCLUDE	:= inc
 LIB		:= lib
 
 LIBRARIES	:=
-EXECUTABLE	:= StrukturyDanych
+EXECUTABLE	:= DataStructures
 
 
 all: $(BIN)/$(EXECUTABLE)
