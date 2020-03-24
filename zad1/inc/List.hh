@@ -1,6 +1,9 @@
 #pragma once
 #include <cstdlib>
 #include <iostream>
+#include <iterator>
+
+using namespace std;
 
 template <typename Type>
 class List
@@ -27,7 +30,7 @@ class List
             next = nullptr;
         }
     };
-    
+
     ListNode *head;
     ListNode *tail;
 
@@ -35,15 +38,14 @@ public:
     List();
     ~List();
 
+    List(const List &list);
+
     void pushBack(const Type &newElement);
     void pushFront(const Type &newElement);
     void insert(const Type &newElement, int index);
     void remove(int index);
     void printList();
-    //Iterator begin();
-    //Iterator end();
-    //ConstIterator cbegin() const;
-    //ConstIterator cend() const;
+    
     Type &operator[](int index);
 };
 
@@ -59,12 +61,40 @@ List<Type>::~List()
 {
     ListNode *temp = head;
     while (temp != tail)
-    {                      
-        head = temp->next; 
-        delete temp;      
-        temp = head;       
+    {
+        head = temp->next;
+        delete temp;
+        temp = head;
     }
-    delete tail; 
+    delete tail;
+}
+
+template <typename type>
+List<type>::List(const List &list)
+{
+    ListNode *newtemp = nullptr;
+    ListNode *newnext = nullptr;
+    if (list.head == NULL)
+    {
+        head = NULL;
+    }
+    else
+    {
+        head = new ListNode;
+        head->value = list.head->value;
+
+        newtemp = head;
+        newnext = list.head->next;
+    }
+
+    while (newnext != NULL)
+    {
+        newtemp->next = new ListNode;
+        newtemp = newtemp->next;
+        newtemp->value = newnext->value;
+        newnext = newnext->next;
+    }
+    newtemp->next = 0;
 }
 
 template <typename Type>
@@ -119,7 +149,7 @@ void List<Type>::remove(int index)
     ListNode *temp = head;
     ListNode *prev = nullptr;
     for (int i = 1; i < index; ++i)
-    { 
+    {
         if (temp != nullptr)
         {
             prev = temp;
@@ -128,7 +158,6 @@ void List<Type>::remove(int index)
         else
             throw "Lista jest krótsza niż argument w remove!";
     }
-
 
     prev->next = temp->next;
     delete temp;

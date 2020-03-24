@@ -67,6 +67,9 @@ int main()
     cout << "enqueue 'mother' with priority '5' ; dequeue ; enqueue 'father' with priority '2'<<<" << endl;
     cout << endl;
 
+    cout << "............................MAP............................" << endl;
+    cout << endl;
+
     map.insert('r', "car");
     map.insert('q', "bus");
     map.insert('p', "train");
