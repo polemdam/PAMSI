@@ -20,11 +20,11 @@ public:
     void swap(type firstElem, type lastElem);
     type partition(int beginingIndex, int endIndex);
     void quicksort(int beginingIndex = 0, int endIndex = size - 1);
-    void heap(int n, int i);
-    void heapsort(int n = size);
+    void heap(int count, int i);
+    void heapsort(int count = size);
     void insertionsort(int beginingIndex = 0, int endIndex = size - 1);
-    void introsort_r(int beginingIndex = 0, int endIndex = size - 1);
-    void introsort(int beginingIndex = 0, int endIndex = size - 1);
+    void introsort_r(int beginingIndex = 0, int endIndex = size );
+    void introsort(int beginingIndex = 0, int endIndex = size);
     void freeMemory();
     void MedianOfThree(int L, int R);
     bool isSorted();
@@ -177,41 +177,51 @@ void Array<type, size>::quicksort(int beginingIndex, int endIndex)
     }
 }
 template <typename type, int size>
-void Array<type, size>::heap(int n, int i)
+void Array<type, size>::heap(int count, int i)
+
 {
-    long j;
-    while (i <= n / 2)
-    {
-        j = 2 * i;
-        if (j + 1 <= n && array[j + 1] > array[j])
-            j = j + 1;
-        if (array[i] < array[j])
-            swap(i, j);
-        else
-            break;
-        i = j;
-    }
+	int largest = i;
+	int left = 2 * i + 1;
+	int right = 2 * i + 2;
+
+	if (left<count && array[left]> array[largest])
+	{
+		largest = left;
+	}
+
+	if (right < count && array[right] > array[largest])
+	{
+		largest = right;
+	}
+
+	if (largest != i)
+	{
+		swap(i, largest);
+		heap(count, largest);
+	}
 }
 
 template <typename type, int size>
-void Array<type, size>::heapsort(int n)
+void Array<type, size>::heapsort(int count)
 {
-    long i;
-    for (i = n / 2; i > 0; --i)
-        heap(i, n);
-    for (i = n - 1; i > 0; --i)
-    {
-        swap(0, i);
-        heap(1, i);
-    }
+	for (int i = count / 2 - 1; i >= 0; i--)
+	{
+		heap(count, i);
+	}
+
+	for (int i = count - 1; i >= 0; i--)
+	{
+		swap(0, i);
+		heap(i, 0);
+	}
 }
 
 template <typename type, int size>
 void Array<type, size>::introsort(int beginingIndex, int endIndex)
-{
+ {
     introsort_r(endIndex, (int)floor(2 * log(size)));
     insertionsort(beginingIndex, endIndex);
-}
+} 
 
 template <typename type, int size>
 void Array<type, size>::freeMemory()
@@ -233,7 +243,7 @@ void Array<type, size>::MedianOfThree(int L, int R)
 
 template <typename type, int size>
 void Array<type, size>::insertionsort(int beginingIndex, int endIndex)
-{
+ {
 
     {
         long i, j;
@@ -246,8 +256,9 @@ void Array<type, size>::insertionsort(int beginingIndex, int endIndex)
             array[j] = temp;
         }
     }
-}
-template <typename type, int size>
+} 
+
+ template <typename type, int size>
 void Array<type, size>::introsort_r(int beginingIndex, int endIndex)
 
 {
@@ -262,7 +273,7 @@ void Array<type, size>::introsort_r(int beginingIndex, int endIndex)
         introsort_r(i, endIndex - 1);
     if (endIndex - 1 - i > 9)
         introsort_r(beginingIndex - 1 - i, endIndex - 1);
-}
+} 
 
 template <typename type, int size>
 bool Array<type, size>::isSorted()
