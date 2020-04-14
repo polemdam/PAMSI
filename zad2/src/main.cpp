@@ -1,6 +1,6 @@
 #include <cstdlib>
 #include <stdlib.h>
-#include<vector>
+#include <vector>
 #include "array.h"
 #include "timer.h"
 
@@ -8,20 +8,15 @@ using namespace std;
 
 int main()
 {
-   Array<int,1000000 >* array = new Array<int,1000000 >[100];
+   Array<int, 10000> *arrays = new Array<int, 10000>[100];
    Timer timer;
 
    cout << endl;
-  /*  cout << "50% sorted" << endl; */
    for (int i = 0; i < 100; i++)
-   {
-      array[i].SetArray();
-   }
+      arrays[i].SetArray();
    timer.start_measuring();
    for (int i = 0; i < 100; i++)
-   {
-      array[i].mergesort();
-   }
+      arrays[i].introsort();
    timer.stop_measuring();
    timer.print_duration();
-}
+ }

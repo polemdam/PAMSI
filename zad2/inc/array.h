@@ -5,12 +5,14 @@
 #include <iostream>
 #include <math.h>
 #include <algorithm>
-template <typename type, long long size>
+template <typename type, int size>
 class Array
 {
     type *array;
 
 public:
+    Array();
+    ~Array();
     void printArray();
     void SetArray(float sort = 0);
     void merge(int beginingIndex, int centreIndex, int endIndex);
@@ -19,7 +21,7 @@ public:
     type partition(int beginingIndex, int endIndex);
     void quicksort(int beginingIndex = 0, int endIndex = size - 1);
     void heap(int n, int i);
-    void heapsort(int n = size - 1);
+    void heapsort(int n = size);
     void insertionsort(int beginingIndex = 0, int endIndex = size - 1);
     void introsort_r(int beginingIndex = 0, int endIndex = size - 1);
     void introsort(int beginingIndex = 0, int endIndex = size - 1);
@@ -28,7 +30,18 @@ public:
     bool isSorted();
 };
 
-template <typename type, long long size>
+template <typename type, int size>
+Array<type, size>::Array()
+{
+}
+
+template <typename type, int size>
+Array<type, size>::~Array()
+{
+    delete array;
+}
+
+template <typename type, int size>
 void Array<type, size>::merge(int beginingIndex, int centreIndex, int endIndex)
 {
 
@@ -75,9 +88,11 @@ void Array<type, size>::merge(int beginingIndex, int centreIndex, int endIndex)
         j++;
         k++;
     }
+    delete[] left_array;
+    delete[] right_array;
 }
 
-template <typename type, long long size>
+template <typename type, int size>
 void Array<type, size>::mergesort(int beginingIndex, int endIndex)
 {
     if (beginingIndex < endIndex)
@@ -88,7 +103,7 @@ void Array<type, size>::mergesort(int beginingIndex, int endIndex)
         merge(beginingIndex, centreIndex, endIndex);
     }
 }
-template <typename type, long long size>
+template <typename type, int size>
 void Array<type, size>::SetArray(float sort)
 {
     array = new type[size];
@@ -108,17 +123,12 @@ void Array<type, size>::SetArray(float sort)
         if (sort < 0)
         {
             std::sort(array, array + size);
-            double temp;
             for (int i = 0; i < size / 2; i++)
-            {
-                temp = array[size - i - 1];
-                array[size - i - 1] = array[i];
-                array[i] = temp;
-            }
+                swap(array[i], array[size - i]);
         }
     }
 }
-template <typename type, long long size>
+template <typename type, int size>
 void Array<type, size>::printArray()
 {
     for (unsigned int i = 0; i < size; i++)
@@ -127,7 +137,7 @@ void Array<type, size>::printArray()
     }
     std::cout << std::endl;
 }
-template <typename type, long long size>
+template <typename type, int size>
 void Array<type, size>::swap(type firstElem, type lastElem)
 {
     type temp;
@@ -136,7 +146,7 @@ void Array<type, size>::swap(type firstElem, type lastElem)
     array[lastElem] = temp;
 }
 
-template <typename type, long long size>
+template <typename type, int size>
 type Array<type, size>::partition(int beginingIndex, int endIndex)
 {
     long i, j;
@@ -156,7 +166,7 @@ type Array<type, size>::partition(int beginingIndex, int endIndex)
     swap(i, endIndex - 1);
     return i;
 }
-template <typename type, long long size>
+template <typename type, int size>
 void Array<type, size>::quicksort(int beginingIndex, int endIndex)
 {
     if (beginingIndex < endIndex)
@@ -166,7 +176,7 @@ void Array<type, size>::quicksort(int beginingIndex, int endIndex)
         quicksort(pi + 1, endIndex);
     }
 }
-template <typename type, long long size>
+template <typename type, int size>
 void Array<type, size>::heap(int n, int i)
 {
     long j;
@@ -183,7 +193,7 @@ void Array<type, size>::heap(int n, int i)
     }
 }
 
-template <typename type, long long size>
+template <typename type, int size>
 void Array<type, size>::heapsort(int n)
 {
     long i;
@@ -196,20 +206,20 @@ void Array<type, size>::heapsort(int n)
     }
 }
 
-template <typename type, long long size>
+template <typename type, int size>
 void Array<type, size>::introsort(int beginingIndex, int endIndex)
 {
-    introsort_r(endIndex, (int)floor(2 * log(size) / M_LN2));
+    introsort_r(endIndex, (int)floor(2 * log(size)));
     insertionsort(beginingIndex, endIndex);
 }
 
-template <typename type, long long size>
+template <typename type, int size>
 void Array<type, size>::freeMemory()
 {
     delete[] array;
 }
 
-template <typename type, long long size>
+template <typename type, int size>
 void Array<type, size>::MedianOfThree(int L, int R)
 {
     if (array[++L - 1] > array[--R])
@@ -221,7 +231,7 @@ void Array<type, size>::MedianOfThree(int L, int R)
     swap(R / 2, R - 1);
 }
 
-template <typename type, long long size>
+template <typename type, int size>
 void Array<type, size>::insertionsort(int beginingIndex, int endIndex)
 {
 
@@ -237,7 +247,7 @@ void Array<type, size>::insertionsort(int beginingIndex, int endIndex)
         }
     }
 }
-template <typename type, long long size>
+template <typename type, int size>
 void Array<type, size>::introsort_r(int beginingIndex, int endIndex)
 
 {
@@ -251,13 +261,10 @@ void Array<type, size>::introsort_r(int beginingIndex, int endIndex)
     if (i > 9)
         introsort_r(i, endIndex - 1);
     if (endIndex - 1 - i > 9)
-    {
         introsort_r(beginingIndex - 1 - i, endIndex - 1);
-        array[i + 1];
-    }
 }
 
-template <typename type, long long size>
+template <typename type, int size>
 bool Array<type, size>::isSorted()
 {
     for (int i = 0; i < size - 1; i++)
